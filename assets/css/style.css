@@ -245,7 +245,7 @@ h6 {
   /* background: url("../img/robotdance.mp4") top center;
   background-size: cover; */
 }
-#video-wrapper{
+#hero .video-wrapper{
   width: 100%;
   height: 100%;
   object-fit: cover;
