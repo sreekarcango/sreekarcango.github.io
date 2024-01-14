@@ -243,6 +243,8 @@ h6 {
   height: 100vh;
   overflow: hidden;
   position: relative;
+  /* background: url("../img/robotdance.mp4") top center;
+  background-size: cover; */
 }
 
 #hero .video-wrapper {
