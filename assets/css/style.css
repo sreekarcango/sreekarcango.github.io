@@ -255,6 +255,7 @@ h6 {
   top: 0;
   left: 0;
 }
+
 #hero:before {
   content: "";
   background: rgba(5, 13, 24, 0.3);
@@ -270,6 +271,7 @@ h6 {
   position: relative;
   z-index: 2;
   min-width: 300px;
+  /* background: rgba(4, 4, 161, 0.25); */
 }
 
 #hero h1 {
