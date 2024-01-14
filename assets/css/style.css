@@ -443,7 +443,7 @@ section {
 # Skills
 --------------------------------------------------------------*/
 .skills .progress {
-  height: 120px;
+  height: 60px;
   display: block;
   background: none;
   border-radius: 0;
