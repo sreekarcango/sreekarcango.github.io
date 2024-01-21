@@ -690,6 +690,13 @@ section {
   height: 15vw;
 }
 
+.services .card .card-img video {
+  transition: 0.3s ease-in-out;
+  object-fit: cover;
+  width: 100%;
+  height: 15vw;
+}
+
 .services .card h3 {
   font-weight: 700;
   font-size: 18px;
