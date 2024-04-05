@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- push -->
+
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -234,18 +235,18 @@
 
             <h3>Packages/API</h3>
             <div class="progress">
-              <span class="skill">Tensorflow <i class="val">100%</i></span>
+              <span class="skill">Tensorflow <i class="val">90%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
                 </div>
               </div>
             </div>
 
 
             <div class="progress">
-              <span class="skill">Pytorch <i class="val">80%</i></span>
+              <span class="skill">Pytorch <i class="val">90%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
                 </div>
               </div>
             </div>
@@ -305,17 +306,17 @@
             </div>
 
             <div class="progress">
-              <span class="skill">Gazebo <i class="val">60%</i></span>
+              <span class="skill">Gazebo <i class="val">90%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
                 </div>
               </div>
             </div>
 
             <div class="progress">
-              <span class="skill">Rviz <i class="val">60%</i></span>
+              <span class="skill">Rviz <i class="val">90%</i></span>
               <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
                 </div>
               </div>
             </div>
@@ -506,6 +507,18 @@
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="card">
               <div class="card-img">
+                <video src="assets/img/projects/robot_arm_manipulator.mp4" type="video/mp4" muted autoplay loop></video>
+              </div>
+              <h3><a href="https://github.com/Sk4587/Robotic-Arm-Manupulation-and-Object-Detection" target="_blank"
+                  class="stretched-link">Robotic Arm Manupulation and Object Detection</a></h3>
+              <p>ROS, Gazebo, Rviz, C++, Python, Move-it, Point Clouds, OpenCV</p>
+              <p>University College London, 2024</p>
+            </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="card">
+              <div class="card-img">
                 <video src="assets/img/projects/QuadSimVideo.mp4" type="video/mp4" muted autoplay loop></video>
               </div>
               <h3><a href="https://github.com/Sk4587/Drone-Trajectory-and-Path-Planning-Simulation" target="_blank"
@@ -526,7 +539,8 @@
               <p>University College London, 2023</p>
             </div>
           </div><!-- End Card Item -->
-
+        </div>
+        <div class="row gy-4">
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
             <div class="card">
               <div class="card-img">
@@ -540,106 +554,107 @@
             </div>
           </div><!-- End Card Item -->
 
-          <div class="row gy-4">
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="card">
+              <div class="card-img">
+                <video src="assets/img/projects/face_morph-1.mp4" type="video/mp4" muted autoplay loop></video>
+                <script>
+                  document.addEventListener('DOMContentLoaded', function () {
+                    var video = document.getElementById('myVideo');
 
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-              <div class="card">
-                <div class="card-img">
-                  <video src="assets/img/projects/face_morph-1.mp4" type="video/mp4" muted autoplay loop></video>
-                  <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                      var video = document.getElementById('myVideo');
+                    // Add event listener to detect when metadata is loaded
+                    video.addEventListener('loadedmetadata', function () {
+                      // Set the playback rate to negative value for reverse playback
+                      video.playbackRate = -1;
 
-                      // Add event listener to detect when metadata is loaded
-                      video.addEventListener('loadedmetadata', function () {
-                        // Set the playback rate to negative value for reverse playback
-                        video.playbackRate = -1;
-
-                        // Play the video
-                        video.play();
-                      });
+                      // Play the video
+                      video.play();
                     });
-                  </script>
-                </div>
-                <h3><a href="https://github.com/Sk4587/Face-Morphing" target="_blank" class="stretched-link">Face
-                    Morphing</a></h3>
-                <p>Image Processing, Python</p>
-                <p>University College London, 2023</p>
+                  });
+                </script>
               </div>
-            </div><!-- End Card Item -->
-
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
-              <div class="card">
-                <div class="card-img">
-                  <img src="assets/img/projects/motiondetection.png" alt="" class="img-fluid">
-                </div>
-                <h3><a href="https://github.com/Sk4587/REAL-TIME-MOTION-CAPTURE-SYSTEM-USING-FIREBASE" target="_blank"
-                    class="stretched-link">Real Time Motion Capture Survaillance System Using Firebase</a></h3>
-                <p>Python, OpenCV, Firebase</p>
-                <p>Anna University, 2020</p>
-              </div>
-            </div><!-- End Card Item -->
-
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
-              <div class="card">
-                <div class="card-img">
-                  <video src="assets/img/projects/drowsinessdetection.mp4" type="video/mp4" muted autoplay loop></video>
-                </div>
-                <h3><a href="https://github.com/Sk4587/DROWSINESS-DETECTION-AND-HEAD-POSE-ESTIMATION." target="_blank"
-                    class="stretched-link">Drowsiness Detection and Head Pose Estimation</a></h3>
-                <p>Python, Dlib, OpenCV</p>
-                <p>Visteon, 2019</p>
-              </div>
-            </div><!-- End Card Item -->
-          </div>
-          <br>
-          <div class="Publications">
-            <h2>Publications</h2>
-            <div class="list">
-              <ol>
-                <br>
-                <a href="https://ieeexplore.ieee.org/abstract/document/9445124" target="_blank">
-                  <li>Positioning the 5-DOF Robotic Arm using Single Stage Deep CNN Model</li>
-                </a>
-                <br>
-                <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197623011648" target="_blank">
-                  <li>In-situ enhanced anchor-free deep CNN framework for a high-speed human-machine interaction</li>
-                </a>
-                <br>
-              </ol>
+              <h3><a href="https://github.com/Sk4587/Face-Morphing" target="_blank" class="stretched-link">Face
+                  Morphing</a></h3>
+              <p>Image Processing, Python</p>
+              <p>University College London, 2023</p>
             </div>
-          </div>
-          <br>
+          </div><!-- End Card Item -->
 
-          <div class="Certifications">
-            <h2>Certifications</h2>
-            <div class="list">
-              <ul>
-                <br>
-                <a href="https://www.credential.net/49eb1838-930c-4229-b2a7-8be5837259f6#gs.64mo01" target="_blank">
-                  <li></i>Tensorflow Developer Certificate</li>
-                </a>
-                <br>
-                <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/8ZUTDPX85DLL"
-                  target="_blank">
-                  <li>TensorFlow Developer Specialization</li>
-                </a>
-                <br>
-                <a href="https://coursera.org/share/4ad449806654d963ba6215cd3767971f" target="_blank">
-                  <li>Deep Learning Specialization</li>
-                </a>
-                <br>
-                <a href="https://coursera.org/share/b14366fc0e82195c3bb46a1aae513116" target="_blank">
-                  <li>Machine Learning</li>
-                </a>
-                <br>
-                <a href="https://coursera.org/share/b54ac7d3490227a3cb51b46bae39f09a" target="_blank">
-                  <li>Algorithm Toolbox</li>
-                </a>
-                <br>
-              </ul>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="card">
+              <div class="card-img">
+                <img src="assets/img/projects/motiondetection.png" alt="" class="img-fluid">
+              </div>
+              <h3><a href="https://github.com/Sk4587/REAL-TIME-MOTION-CAPTURE-SYSTEM-USING-FIREBASE" target="_blank"
+                  class="stretched-link">Real Time Motion Capture Survaillance System Using Firebase</a></h3>
+              <p>Python, OpenCV, Firebase</p>
+              <p>Anna University, 2020</p>
             </div>
+          </div><!-- End Card Item -->
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="card">
+              <div class="card-img">
+                <video src="assets/img/projects/drowsinessdetection.mp4" type="video/mp4" muted autoplay loop></video>
+              </div>
+              <h3><a href="https://github.com/Sk4587/DROWSINESS-DETECTION-AND-HEAD-POSE-ESTIMATION." target="_blank"
+                  class="stretched-link">Drowsiness Detection and Head Pose Estimation</a></h3>
+              <p>Python, Dlib, OpenCV</p>
+              <p>Visteon, 2019</p>
+            </div>
+          </div><!-- End Card Item -->
+        </div>
+        <br>
+
+
+
+        <div class="Publications">
+          <h2>Publications</h2>
+          <div class="list">
+            <ol>
+              <br>
+              <a href="https://ieeexplore.ieee.org/abstract/document/9445124" target="_blank">
+                <li>Positioning the 5-DOF Robotic Arm using Single Stage Deep CNN Model</li>
+              </a>
+              <br>
+              <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197623011648" target="_blank">
+                <li>In-situ enhanced anchor-free deep CNN framework for a high-speed human-machine interaction</li>
+              </a>
+              <br>
+            </ol>
           </div>
+        </div>
+        <br>
+
+        <div class="Certifications">
+          <h2>Certifications</h2>
+          <div class="list">
+            <ul>
+              <br>
+              <a href="https://www.credential.net/49eb1838-930c-4229-b2a7-8be5837259f6#gs.64mo01" target="_blank">
+                <li></i>Tensorflow Developer Certificate</li>
+              </a>
+              <br>
+              <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/8ZUTDPX85DLL"
+                target="_blank">
+                <li>TensorFlow Developer Specialization</li>
+              </a>
+              <br>
+              <a href="https://coursera.org/share/4ad449806654d963ba6215cd3767971f" target="_blank">
+                <li>Deep Learning Specialization</li>
+              </a>
+              <br>
+              <a href="https://coursera.org/share/b14366fc0e82195c3bb46a1aae513116" target="_blank">
+                <li>Machine Learning</li>
+              </a>
+              <br>
+              <a href="https://coursera.org/share/b54ac7d3490227a3cb51b46bae39f09a" target="_blank">
+                <li>Algorithm Toolbox</li>
+              </a>
+              <br>
+            </ul>
+          </div>
+        </div>
 
 
     </section><!-- End Services Section -->
