@@ -768,7 +768,7 @@ section {
   height: 100%;
 }
 
-.services .Certifications h2{
+/* .services .Certifications h2{
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 20px;
@@ -792,7 +792,30 @@ section {
   position: relative;
   border-radius: 0;
   height: 100%;
+} */
+.services .certifications .card {
+  display: flex;
+  justify-content: space-between; /* This spreads out the children */
+  align-items: center; /* Keeps items vertically aligned */
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
 }
+
+.services .certifications .card .text {
+  flex-grow: 1; /* Allows text to take up remaining space */
+  text-align: right; /* Aligns the text to the right */
+}
+
+.services .certifications .card .logo {
+  flex-grow: 0; /* Prevents the logo from growing */
+}
+
+.services .certifications .card .logo img {
+  width: 50px; /* Adjust width as necessary */
+  height: auto; /* Keeps the aspect ratio of the logo */
+}
+
 /*--------------------------------------------------------------
 # Portfolio Details
 --------------------------------------------------------------*/
