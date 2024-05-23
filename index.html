@@ -30,6 +30,17 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
+   <!-- Add Firebase SDK
+   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+   Add Chart.js
+   <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <!-- Add Chart.js Gauge plugin -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-gauge@3.0.2/dist/chartjs-chart-gauge.min.js"></script> --> -->
+
+
+
+
   <!-- =======================================================
   * Template Name: iPortfolio
   * Updated: Jan 09 2024 with Bootstrap v5.3.2
@@ -862,65 +873,125 @@
     </section>End Testimonials Section -->
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
-      <div class="container">
-        <div class="section-title">
-          <h2>Contact</h2>
-          <!-- <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint
-            consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit
-            in iste officiis commodi quidem hic quas.</p> -->
-        </div>
+      
+    <div class="container">
 
-        <div class="row" data-aos="fade-in">
-
-          <div class="col-lg-5 d-flex align-items-stretch">
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>University College London</p>
-              </div>
-
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>sreekar.cango.23@ucl.ac.uk</p>
-              </div>
-
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>+44 74407 55790</p>
-              </div>
-
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.381483698884!2d-0.13661502387136806!3d51.52456250945006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b2f69173579%3A0xd008c67faecc133e!2sUniversity%20College%20London!5e0!3m2!1sen!2sus!4v1705626875213!5m2!1sen!2sus"
-                frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+      <div class="section-title">
+        <h2>Visitor Statistics</h2>
+        <p>Visitor since May 2024: <span id="visitor-count">Loading...</span></p>
+      </div>
+      <canvas id="visitorChart" width="400" height="200"></canvas>
+      <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-gauge@3.0.2/dist/chartjs-chart-gauge.min.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+          // Your web app's Firebase configuration
+          var firebaseConfig = {
+            apiKey: "AIzaSyAGXEAB9iUZKvotqF8Vi6xrBTryswDwR3Y",
+            authDomain: "personal-website-6faf4.firebaseapp.com",
+            projectId: "personal-website-6faf4",
+            storageBucket: "personal-website-6faf4.appspot.com",
+            messagingSenderId: "647751906953",
+            appId: "1:647751906953:web:df5dafa168b9b8bf8cf858",
+            measurementId: "G-GFKRN255M9"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          var db = firebase.firestore();
+    
+          async function updateVisitorCount() {
+            const docRef = db.collection('visitors').doc('mDely3ZcTwmVP4oSVRHo');
+            try {
+              const doc = await docRef.get();
+              let count;
+              if (doc.exists) {
+                count = doc.data().count + 1;
+                await docRef.update({ count: count });
+              } else {
+                count = 1;
+                await docRef.set({ count: count });
+              }
+              document.getElementById('visitor-count').textContent = count;
+    
+              // Update chart
+              updateChart(count);
+            } catch (error) {
+              console.error('Error updating visitor count:', error);
+            }
+          }
+    
+          function updateChart(count) {
+            const ctx = document.getElementById('visitorChart').getContext('2d');
+            const chart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: ['Visitors'],
+                datasets: [{
+                  label: '# of Visitors',
+                  data: [count],
+                  backgroundColor: ['rgba(75, 192, 192, 1)'],
+                  borderColor: ['rgba(0, 0, 0, 1)'],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
+              }
+            });
+          }
+    
+          updateVisitorCount();
+        });
+      </script>
+    <!-- </section> -->
+      <div class="section-title">
+        <h2>Contact</h2>
+      </div>
+      <div class="row" data-aos="fade-in">
+        <div class="col-lg-5 d-flex align-items-stretch">
+          <div class="info">
+            <div class="address">
+              <i class="bi bi-geo-alt"></i>
+              <h4>Location:</h4>
+              <p>University College London</p>
             </div>
-
+            <div class="email">
+              <i class="bi bi-envelope"></i>
+              <h4>Email:</h4>
+              <p>sreekar.cango.23@ucl.ac.uk</p>
+            </div>
+            <div class="phone">
+              <i class="bi bi-phone"></i>
+              <h4>Call:</h4>
+              <p>+44 74407 55790</p>
+            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2482.381483698884!2d-0.13661502387136806!3d51.52456250945006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761b2f69173579%3A0xd008c67faecc133e!2sUniversity%20College%20London!5e0!3m2!1sen!2sus!4v1705626875213!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
           </div>
-
-
-
-
-
-          <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-              class="bi bi-arrow-up-short"></i></a>
-
-          <!-- Vendor JS Files -->
-          <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-          <script src="assets/vendor/aos/aos.js"></script>
-          <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-          <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-          <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-          <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-          <script src="assets/vendor/typed.js/typed.umd.js"></script>
-          <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-          <script src="assets/vendor/php-email-form/validate.js"></script>
-
-          <!-- Template Main JS File -->
-          <script src="assets/js/main.js"></script>
-
-
+        </div>
+      </div>
+    </div>
+  </section><!-- End Contact Section -->
+    
+    
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/typed.js/typed.umd.js"></script>
+    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </main>
 </body>
-
 </html>
