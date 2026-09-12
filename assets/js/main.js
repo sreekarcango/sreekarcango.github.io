@@ -1,262 +1,279 @@
 /**
-* Template Name: iPortfolio
-* Updated: Jan 09 2024 with Bootstrap v5.3.2
-* Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
+* Sreekar Cango — portfolio
+* No dependencies. Typing effect, count-up and reveal are all in here.
 */
-(function() {
+(function () {
   "use strict";
 
-  /**
-   * Easy selector helper function
-   */
-  const select = (el, all = false) => {
-    el = el.trim()
-    if (all) {
-      return [...document.querySelectorAll(el)]
-    } else {
-      return document.querySelector(el)
-    }
-  }
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hasIO = "IntersectionObserver" in window;
 
   /**
-   * Easy event listener function
+   * Theme. An explicit choice wins over the OS setting and persists;
+   * with no stored choice the page follows prefers-color-scheme.
    */
-  const on = (type, el, listener, all = false) => {
-    let selectEl = select(el, all)
-    if (selectEl) {
-      if (all) {
-        selectEl.forEach(e => e.addEventListener(type, listener))
-      } else {
-        selectEl.addEventListener(type, listener)
+  const THEME_KEY = "sc-theme";
+  const root = document.documentElement;
+
+  let storedTheme = null;
+  try {
+    storedTheme = localStorage.getItem(THEME_KEY);
+  } catch {
+    /* storage unavailable */
+  }
+  if (storedTheme === "dark" || storedTheme === "light") {
+    root.setAttribute("data-theme", storedTheme);
+  }
+
+  const themeToggle = $(".theme-toggle");
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const current = root.getAttribute("data-theme") || (prefersDark ? "dark" : "light");
+      const next = current === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      themeToggle.setAttribute("aria-label", `Switch to ${next === "dark" ? "light" : "dark"} theme`);
+      try {
+        localStorage.setItem(THEME_KEY, next);
+      } catch {
+        /* private mode: the choice just won't survive a reload */
       }
-    }
-  }
-
-  /**
-   * Easy on scroll event listener 
-   */
-  const onscroll = (el, listener) => {
-    el.addEventListener('scroll', listener)
-  }
-
-  /**
-   * Navbar links active state on scroll
-   */
-  let navbarlinks = select('#navbar .scrollto', true)
-  const navbarlinksActive = () => {
-    let position = window.scrollY + 200
-    navbarlinks.forEach(navbarlink => {
-      if (!navbarlink.hash) return
-      let section = select(navbarlink.hash)
-      if (!section) return
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        navbarlink.classList.add('active')
-      } else {
-        navbarlink.classList.remove('active')
-      }
-    })
-  }
-  window.addEventListener('load', navbarlinksActive)
-  onscroll(document, navbarlinksActive)
-
-  /**
-   * Scrolls to an element with header offset
-   */
-  const scrollto = (el) => {
-    let elementPos = select(el).offsetTop
-    window.scrollTo({
-      top: elementPos,
-      behavior: 'smooth'
-    })
-  }
-
-  /**
-   * Back to top button
-   */
-  let backtotop = select('.back-to-top')
-  if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add('active')
-      } else {
-        backtotop.classList.remove('active')
-      }
-    }
-    window.addEventListener('load', toggleBacktotop)
-    onscroll(document, toggleBacktotop)
-  }
-
-  /**
-   * Mobile nav toggle
-   */
-  on('click', '.mobile-nav-toggle', function(e) {
-    select('body').classList.toggle('mobile-nav-active')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
-  })
-
-  /**
-   * Scrool with ofset on links with a class name .scrollto
-   */
-  on('click', '.scrollto', function(e) {
-    if (select(this.hash)) {
-      e.preventDefault()
-
-      let body = select('body')
-      if (body.classList.contains('mobile-nav-active')) {
-        body.classList.remove('mobile-nav-active')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
-      }
-      scrollto(this.hash)
-    }
-  }, true)
-
-  /**
-   * Scroll with ofset on page load with hash links in the url
-   */
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      if (select(window.location.hash)) {
-        scrollto(window.location.hash)
-      }
-    }
-  });
-
-  /**
-   * Hero type effect
-   */
-  const typed = select('.typed')
-  if (typed) {
-    let typed_strings = typed.getAttribute('data-typed-items')
-    typed_strings = typed_strings.split(',')
-    new Typed('.typed', {
-      strings: typed_strings,
-      loop: true,
-      typeSpeed: 100,
-      backSpeed: 50,
-      backDelay: 2000
     });
   }
 
   /**
-   * Skills animation
+   * Hero video. Only fetched when it will actually be seen and wanted: a wide
+   * viewport, no reduced-motion preference, no Save-Data. Everyone else gets
+   * the poster, which is already painted as the background.
    */
-  let skilsContent = select('.skills-content');
-  if (skilsContent) {
-    new Waypoint({
-      element: skilsContent,
-      offset: '80%',
-      handler: function(direction) {
-        let progress = select('.progress .progress-bar', true);
-        progress.forEach((el) => {
-          el.style.width = el.getAttribute('aria-valuenow') + '%'
-        });
-      }
-    })
+  const heroMedia = $(".hero-media[data-video]");
+  if (heroMedia) {
+    const saveData = navigator.connection && navigator.connection.saveData;
+    const wide = window.matchMedia("(min-width: 900px)").matches;
+    if (wide && !reducedMotion && !saveData) {
+      const video = document.createElement("video");
+      video.src = heroMedia.dataset.video;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.autoplay = true;
+      video.setAttribute("aria-hidden", "true");
+      video.setAttribute("tabindex", "-1");
+      video.preload = "auto";
+      heroMedia.appendChild(video);
+      const playing = video.play();
+      if (playing) playing.catch(() => {});
+    }
   }
 
   /**
-   * Porfolio isotope and filter
+   * Scroll-spy via IntersectionObserver.
    */
-  window.addEventListener('load', () => {
-    let portfolioContainer = select('.portfolio-container');
-    if (portfolioContainer) {
-      let portfolioIsotope = new Isotope(portfolioContainer, {
-        itemSelector: '.portfolio-item'
-      });
+  const navLinks = $$("#navbar a[href^='#']");
+  if (navLinks.length && hasIO) {
+    const linkFor = new Map();
+    navLinks.forEach((link) => {
+      const section = document.getElementById(link.hash.slice(1));
+      if (section) linkFor.set(section, link);
+    });
 
-      let portfolioFilters = select('#portfolio-flters li', true);
+    const visible = new Set();
+    const setActive = () => {
+      if (!visible.size) return;
+      const top = [...visible].sort((a, b) => a.offsetTop - b.offsetTop)[0];
+      navLinks.forEach((l) => l.classList.remove("active"));
+      const link = linkFor.get(top);
+      if (link) link.classList.add("active");
+    };
 
-      on('click', '#portfolio-flters li', function(e) {
-        e.preventDefault();
-        portfolioFilters.forEach(function(el) {
-          el.classList.remove('filter-active');
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visible.add(entry.target);
+          else visible.delete(entry.target);
         });
-        this.classList.add('filter-active');
-
-        portfolioIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
-        portfolioIsotope.on('arrangeComplete', function() {
-          AOS.refresh()
-        });
-      }, true);
-    }
-
-  });
-
-  /**
-   * Initiate portfolio lightbox 
-   */
-  const portfolioLightbox = GLightbox({
-    selector: '.portfolio-lightbox'
-  });
-
-  /**
-   * Portfolio details slider
-   */
-  new Swiper('.portfolio-details-slider', {
-    speed: 400,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    }
-  });
-
-  /**
-   * Testimonials slider
-   */
-  new Swiper('.testimonials-slider', {
-    speed: 600,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    slidesPerView: 'auto',
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    },
-    breakpoints: {
-      320: {
-        slidesPerView: 1,
-        spaceBetween: 20
+        setActive();
       },
+      { rootMargin: "-25% 0px -60% 0px", threshold: 0 }
+    );
+    linkFor.forEach((_l, section) => spy.observe(section));
+  }
 
-      1200: {
-        slidesPerView: 3,
-        spaceBetween: 20
-      }
+  /**
+   * Mobile navigation drawer
+   */
+  const body = document.body;
+  const navToggle = $(".mobile-nav-toggle");
+  const backdrop = $(".nav-backdrop");
+
+  const setNav = (open) => {
+    body.classList.toggle("mobile-nav-active", open);
+    if (navToggle) {
+      navToggle.setAttribute("aria-expanded", String(open));
+      navToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
     }
+  };
+
+  if (navToggle) {
+    navToggle.addEventListener("click", () => setNav(!body.classList.contains("mobile-nav-active")));
+  }
+  if (backdrop) backdrop.addEventListener("click", () => setNav(false));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && body.classList.contains("mobile-nav-active")) setNav(false);
   });
+  navLinks.forEach((link) => link.addEventListener("click", () => setNav(false)));
 
   /**
-   * Animation on scroll
+   * Back to top
    */
-  window.addEventListener('load', () => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-      mirror: false
-    })
-  });
+  const backToTop = $(".back-to-top");
+  if (backToTop) {
+    const sentinel = document.createElement("div");
+    sentinel.style.cssText = "position:absolute;top:400px;height:1px;width:1px;pointer-events:none;";
+    body.appendChild(sentinel);
+    if (hasIO) {
+      new IntersectionObserver(
+        ([entry]) => backToTop.classList.toggle("active", !entry.isIntersecting),
+        { threshold: 0 }
+      ).observe(sentinel);
+    }
+    backToTop.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+    });
+  }
 
   /**
-   * Initiate Pure Counter 
+   * Hero typing effect (replaces typed.js)
    */
-  new PureCounter();
+  const typed = $(".typed");
+  const typedItems = typed && typed.getAttribute("data-typed-items");
+  if (typed && typedItems) {
+    const phrases = typedItems.split(",").map((s) => s.trim()).filter(Boolean);
+    if (reducedMotion || phrases.length < 2) {
+      typed.textContent = phrases[0] || "";
+    } else {
+      let phrase = 0;
+      let pos = 0;
+      let deleting = false;
+      const tick = () => {
+        const current = phrases[phrase];
+        pos += deleting ? -1 : 1;
+        typed.textContent = current.slice(0, pos);
+        let delay = deleting ? 38 : 72;
+        if (!deleting && pos === current.length) {
+          deleting = true;
+          delay = 2100;
+        } else if (deleting && pos === 0) {
+          deleting = false;
+          phrase = (phrase + 1) % phrases.length;
+          delay = 320;
+        }
+        setTimeout(tick, delay);
+      };
+      setTimeout(tick, 500);
+    }
+  }
 
-})()
+  /**
+   * Count-up on scroll (replaces purecounter)
+   */
+  const counters = $$("[data-count]");
+  if (counters.length) {
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    const animate = (el) => {
+      const target = Number(el.dataset.count) || 0;
+      if (reducedMotion) {
+        el.textContent = String(target);
+        return;
+      }
+      const duration = 1400;
+      const start = performance.now();
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        el.textContent = String(Math.round(easeOut(t) * target));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    if (hasIO) {
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            animate(entry.target);
+            obs.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      counters.forEach((el) => io.observe(el));
+    } else {
+      counters.forEach(animate);
+    }
+  }
+
+  /**
+   * Scroll reveal. Anything already at or above the viewport is shown at
+   * once, so a #hash jump can never leave a skipped section invisible.
+   */
+  const revealTargets = $$("[data-reveal]");
+  if (revealTargets.length) {
+    if (hasIO && !reducedMotion) {
+      const revealObserver = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("is-visible");
+            obs.unobserve(entry.target);
+          });
+        },
+        { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+      );
+      revealTargets.forEach((el) => revealObserver.observe(el));
+
+      const revealPassed = () => {
+        revealTargets.forEach((el) => {
+          if (el.classList.contains("is-visible")) return;
+          if (el.getBoundingClientRect().top < window.innerHeight) {
+            el.classList.add("is-visible");
+            revealObserver.unobserve(el);
+          }
+        });
+      };
+      revealPassed();
+      window.addEventListener("hashchange", () => setTimeout(revealPassed, 400));
+      window.addEventListener("load", revealPassed);
+    } else {
+      revealTargets.forEach((el) => el.classList.add("is-visible"));
+    }
+  }
+
+  /**
+   * Pause decorative loops while offscreen — several decoding at once is
+   * wasted battery on mobile.
+   */
+  const loops = $$("video[data-autoloop]");
+  if (loops.length && hasIO) {
+    const loopObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            const p = v.play();
+            if (p) p.catch(() => {});
+          } else {
+            v.pause();
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    loops.forEach((v) => loopObserver.observe(v));
+  }
+
+  const thisYear = String(new Date().getFullYear());
+  $$("#year, .year").forEach((el) => (el.textContent = thisYear));
+})();
