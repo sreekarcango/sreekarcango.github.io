@@ -1348,6 +1348,10 @@ section {
 .stats-panel {
   display: grid;
   grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  grid-template-areas:
+    "summary globe"
+    "countries globe";
+  grid-template-rows: auto 1fr;
   gap: 22px;
   align-items: start;
 }
@@ -1355,6 +1359,95 @@ section {
 .stats-summary,
 .stats-countries {
   padding: 26px 24px;
+}
+
+.stats-summary {
+  grid-area: summary;
+}
+
+.stats-countries {
+  grid-area: countries;
+}
+
+/* Visitor globe */
+.stats-globe {
+  grid-area: globe;
+  padding: 22px 22px 18px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stats-globe[hidden] {
+  display: none;
+}
+
+.globe-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.globe-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: pan-y;
+  outline-offset: 6px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.globe-wrap canvas.is-dragging {
+  cursor: grabbing;
+}
+
+.globe-tooltip {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  padding: 7px 11px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  white-space: nowrap;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  transform: translate(-50%, calc(-100% - 12px));
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.globe-tooltip.is-visible {
+  opacity: 1;
+}
+
+.globe-tooltip strong {
+  display: block;
+  color: var(--heading);
+  font-weight: 600;
+}
+
+.globe-tooltip span {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.globe-hint {
+  margin: 14px 0 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
 }
 
 .stats-total {
@@ -1627,6 +1720,11 @@ section {
 @media (max-width: 899.98px) {
   .stats-panel {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "summary"
+      "globe"
+      "countries";
+    grid-template-rows: auto;
   }
 }
 

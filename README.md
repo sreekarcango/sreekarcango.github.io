@@ -13,6 +13,9 @@ index.html                 the whole site, with an inline SVG icon sprite at the
 assets/css/style.css       theme tokens (light + dark), layout grid, components
 assets/js/main.js          nav, theme toggle, scroll reveal, hero typing, count-up, video gating
 assets/js/visitor-stats.js visitor counter + per-country breakdown (Firebase, loaded from CDN)
+assets/js/globe.js         interactive visitor globe (canvas, no dependencies)
+assets/js/globe-data.js    generated land dot-matrix + country centroids for the globe
+tools/build-globe-data.mjs regenerates globe-data.js from Natural Earth
 assets/Sreekar_Cango_Resume.pdf
 assets/img/                optimised media (WebP + H.264 loops)
 firestore.rules            security rules for the visitor counter
@@ -101,6 +104,20 @@ tokens Firestore is not yet checking.
 Country is resolved client-side from a free IP-geo lookup (`ipwho.is`). If that lookup
 fails the visit is still counted, just without a country. If Firebase itself is unreachable
 the whole section hides rather than showing a permanent *Loading…*.
+
+### The globe
+
+The *Who's visiting* card draws every visiting country on a rotating dot-matrix globe. It is
+plain `<canvas>` with no library: `assets/js/globe-data.js` holds a 1.5° equal-area land
+bitmask (~3 KB) and one centroid per ISO country, both generated from Natural Earth 1:50m data.
+The module is only fetched once Firestore has returned rows, and the ranked list stays as the
+accessible version of the same data. Drag or use the arrow keys to rotate; it idles slowly
+unless the visitor prefers reduced motion. To regenerate the data:
+
+```
+npm install world-atlas@2 topojson-client@3 i18n-iso-countries
+node tools/build-globe-data.mjs assets/js/globe-data.js
+```
 
 ## Notes
 

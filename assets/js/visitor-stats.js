@@ -217,8 +217,26 @@ async function run() {
       els.you.textContent = country ? `${flagFor(country)} ${country}` : "—";
     }
     renderCountries(rows, countryTotal);
+    mountGlobeCard(rows, country);
   } catch {
     hideSection();
+  }
+}
+
+/**
+ * The interactive globe is a progressive enhancement: loaded only once there
+ * is data to plot, and the ranked list above stays as the accessible record.
+ */
+async function mountGlobeCard(rows, you) {
+  const card = document.getElementById("stats-globe");
+  const wrap = document.getElementById("globe-wrap");
+  if (!card || !wrap || !rows.length) return;
+  try {
+    const { mountGlobe } = await import("./globe.js");
+    card.hidden = false;
+    wrap._globe = mountGlobe(wrap, { rows, you, flagFor, countryName });
+  } catch {
+    card.hidden = true;
   }
 }
 
