@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// Visitor counters for sreekarcango.github.io.
+//
+// The site is static, so the browser writes to Firestore directly and there is
+// no server to trust. These rules are what stop a visitor from setting the
+// counter to an arbitrary value: a write may only move `count` up by exactly
+// one, and may not touch any other field. Enabling App Check additionally
+// restricts writes to the real domain.
+//
+// Paths not matched below are denied by default.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // A new counter starts at exactly 1 and carries nothing else.
+    function isFirstWrite() {
+      return request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count is int
+        && request.resource.data.count == 1;
+    }
+
+    // An existing counter may only advance by one, and only `count` may change.
+    function isIncrementByOne() {
+      return request.resource.data.count is int
+        && request.resource.data.count == resource.data.count + 1
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['count']);
+    }
+
+    // Total visits. Publicly readable so the site can display the number.
+    match /visitors/{docId} {
+      allow read: if true;
+      allow create: if isFirstWrite();
+      allow update: if isIncrementByOne();
+      allow delete: if false;
+    }
+
+    // Per-country tallies, keyed by ISO 3166-1 alpha-2 code. No IP address or
+    // finer-grained location is ever stored.
+    match /countries/{code} {
+      allow read: if true;
+      allow create: if isFirstWrite() && code.matches('^[A-Z]{2}$');
+      allow update: if isIncrementByOne();
+      allow delete: if false;
+    }
+  }
+}
