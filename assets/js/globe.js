@@ -87,8 +87,14 @@ export function mountGlobe(host, opts) {
   // Initial view: face the visitor's own country, else the busiest one.
   const focusCode = (opts.you && CENTROIDS[opts.you] && opts.you) || (markers[0] && markers[0].code);
   const focus = focusCode ? CENTROIDS[focusCode] : [20, 0];
-  let yaw = (focus[1] - 90) * RAD;
-  let pitch = clamp(focus[0] * RAD, -1.1, 1.1);
+  let yaw = 0;
+  let pitch = 0;
+  /** Turn the given latitude/longitude to face the viewer. */
+  const setView = (lat, lon) => {
+    yaw = (lon - 90) * RAD;
+    pitch = clamp(lat * RAD, -1.1, 1.1);
+  };
+  setView(focus[0], focus[1]);
 
   let size = 0;
   let dpr = 1;
@@ -326,6 +332,10 @@ export function mountGlobe(host, opts) {
 
   return {
     update(rows) { setRows(rows); dirty = true; wake(); },
+    /** Turn a latitude/longitude to the front. */
+    setView(lat, lon) { setView(lat, lon); dirty = true; draw(performance.now()); wake(); },
+    /** Turn a country's marker to the front, if its centroid is known. */
+    focus(code) { const c = CENTROIDS[code]; if (c) this.setView(c[0], c[1]); return !!c; },
     /** Internal state, for tests and debugging. */
     state() { return { visible, animating: !!raf, size, yaw, pitch, markers: markers.length }; },
     /** Screen position of a country's marker, for tests and debugging. */

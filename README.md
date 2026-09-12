@@ -18,6 +18,7 @@ assets/js/globe-data.js    generated land dot-matrix + country centroids for the
 tools/build-globe-data.mjs regenerates globe-data.js from Natural Earth
 assets/Sreekar_Cango_Resume.pdf
 assets/img/                optimised media (WebP + H.264 loops)
+assets/img/education/      institution emblems shown beside each Education entry
 firestore.rules            security rules for the visitor counter
 ```
 
@@ -104,6 +105,13 @@ tokens Firestore is not yet checking.
 Country is resolved client-side from a free IP-geo lookup (`ipwho.is`). If that lookup
 fails the visit is still counted, just without a country. If Firebase itself is unreachable
 the whole section hides rather than showing a permanent *Loading…*.
+
+### Institution emblems
+
+The two Education entries each show a small emblem from `assets/img/education/`. These are
+original line drawings in the site's accent blue, not official university logos, so there is
+no trademark to license. To use a real logo instead, drop a square SVG or PNG at the same path
+and filename; nothing else needs to change.
 
 ### The globe
 
