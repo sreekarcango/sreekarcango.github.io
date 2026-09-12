@@ -177,43 +177,6 @@
     }
   }
 
-  /**
-   * Count-up on scroll (replaces purecounter)
-   */
-  const counters = $$("[data-count]");
-  if (counters.length) {
-    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-    const animate = (el) => {
-      const target = Number(el.dataset.count) || 0;
-      if (reducedMotion) {
-        el.textContent = String(target);
-        return;
-      }
-      const duration = 1400;
-      const start = performance.now();
-      const step = (now) => {
-        const t = Math.min(1, (now - start) / duration);
-        el.textContent = String(Math.round(easeOut(t) * target));
-        if (t < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    if (hasIO) {
-      const io = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            animate(entry.target);
-            obs.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.4 }
-      );
-      counters.forEach((el) => io.observe(el));
-    } else {
-      counters.forEach(animate);
-    }
-  }
 
   /**
    * Scroll reveal. Anything already at or above the viewport is shown at

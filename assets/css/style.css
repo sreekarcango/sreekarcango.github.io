@@ -942,63 +942,6 @@ section {
 }
 
 /*--------------------------------------------------------------
-# Metrics
---------------------------------------------------------------*/
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-}
-
-.metric-tile {
-  padding: 28px 26px;
-  position: relative;
-  overflow: hidden;
-}
-
-.metric-tile::after {
-  content: "";
-  position: absolute;
-  right: -40px;
-  top: -40px;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-soft), transparent 70%);
-  pointer-events: none;
-}
-
-.metric-tile .icon {
-  font-size: 1.5rem;
-  color: var(--accent);
-  margin-bottom: 14px;
-}
-
-.metric-value {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: 2.6rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--heading);
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-}
-
-.metric-suffix {
-  font-size: 1.3rem;
-  margin-left: 2px;
-  color: var(--accent);
-}
-
-.metric-tile p {
-  margin: 12px 0 0;
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-/*--------------------------------------------------------------
 # Skills
 --------------------------------------------------------------*/
 .skill-groups {
@@ -1768,10 +1711,6 @@ section {
   .hero-actions .btn {
     padding: 12px 20px;
     font-size: 0.9rem;
-  }
-
-  .metric-value {
-    font-size: 2.1rem;
   }
 
   .stats-total {

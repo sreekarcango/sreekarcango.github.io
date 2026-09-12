@@ -54,7 +54,7 @@ To add one, copy its `<svg>` inner markup from the icon set into a new
   `ffmpeg -c:v libx264 -crf 30 -preset slow -vf scale=640:-2 -an -movflags +faststart`
   (1280 wide for the hero). WebM was measured and came out larger than H.264 for every clip,
   so only MP4 is shipped.
-- **Impact numbers** — the four tiles under *Impact* and the hero tagline are hand-maintained.
+- **Hero tagline** — the rotating phrases under the name are hand-maintained.
 
 ## Visitor statistics (Firebase)
 
