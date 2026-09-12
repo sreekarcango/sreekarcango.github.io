@@ -3,20 +3,42 @@
 Personal site for Sreekar Cango — robotics engineer working on SLAM, localisation and HD mapping.
 Live at <https://sreekarcango.github.io/>.
 
-A single static page served by GitHub Pages. No build step: edit `index.html`, commit, push.
+A single static page served by GitHub Pages. No build step and no dependencies: there is no
+CSS framework, no icon font and no third-party JavaScript. Edit `index.html`, commit, push.
 
 ## Layout
 
 ```
-index.html                 the whole site
-assets/css/style.css       theme tokens (light + dark), layout, components
-assets/js/main.js          nav, theme toggle, scroll reveal, hero typing
-assets/js/visitor-stats.js visitor counter + per-country breakdown (Firebase)
+index.html                 the whole site, with an inline SVG icon sprite at the top of <body>
+assets/css/style.css       theme tokens (light + dark), layout grid, components
+assets/js/main.js          nav, theme toggle, scroll reveal, hero typing, count-up, video gating
+assets/js/visitor-stats.js visitor counter + per-country breakdown (Firebase, loaded from CDN)
 assets/Sreekar_Cango_Resume.pdf
-assets/img/                optimised media (WebP + ~1 Mbps H.264 loops)
-assets/vendor/             bootstrap CSS, bootstrap-icons, typed.js, purecounter
+assets/img/                optimised media (WebP + H.264 loops)
 firestore.rules            security rules for the visitor counter
 ```
+
+## Performance notes
+
+Measured with a headless browser against a local server (fonts and analytics excluded):
+
+| Page                       | Before   | After   |
+|----------------------------|----------|---------|
+| Mobile (390 px)            | 1,706 KB / 20 requests | **190 KB / 12 requests** |
+| Desktop (1440 px)          | 1,706 KB / 20 requests | **734 KB / 13 requests** |
+
+What changed: Bootstrap (227 KB) was replaced by ~40 lines of grid CSS; the Bootstrap Icons
+font + stylesheet (223 KB) by an inline SVG sprite containing only the 38 icons used (~20 KB);
+typed.js and purecounter by ~60 lines in `main.js`. The hero video is only fetched on viewports
+900 px and wider, and never when the visitor has set reduced motion or Save-Data — phones get
+the poster. It is also cut to a 9 s loop at a high CRF, which is invisible under the overlay.
+
+## Icons
+
+Icons come from [Bootstrap Icons](https://icons.getbootstrap.com/) (MIT) as an inline sprite.
+To add one, copy its `<svg>` inner markup from the icon set into a new
+`<symbol id="i-NAME" viewBox="0 0 16 16">` in the sprite and reference it with
+`<svg class="icon"><use href="#i-NAME"/></svg>`.
 
 ## Updating content
 
