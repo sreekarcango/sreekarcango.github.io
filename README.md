@@ -1,6 +1,7 @@
 # sreekarcango.github.io
 
-Personal site for Sreekar Cango — robotics engineer working on SLAM, localisation and HD mapping.
+Personal site for Sreekar Cango — robotics engineer working across computer vision, perception
+and state estimation.
 Live at <https://sreekarcango.github.io/>.
 
 A single static page served by GitHub Pages. No build step and no dependencies: there is no
